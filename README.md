@@ -24,9 +24,25 @@ npm run build
 
 ## GitHub Pages 배포
 
+### 사전 조건
+
+- **Git 저장소 + GitHub 원격 필수**: `npm run deploy`는 `git remote origin`이 있어야 동작합니다.
+- GitHub에 빈 저장소를 만든 뒤:
+  ```bash
+  git init
+  git add .
+  git commit -m "Initial commit"
+  git remote add origin https://github.com/YOUR_USERNAME/portfolio.git
+  git branch -M main
+  git push -u origin main
+  ```
+- 원격 없이 한 번만 배포하려면:  
+  `npx gh-pages -d dist -r https://github.com/YOUR_USERNAME/portfolio.git`  
+  (YOUR_USERNAME을 본인 GitHub 사용자명으로 바꾸세요.)
+
 ### 방법 1: gh-pages 패키지 (수동 배포)
 
-1. 저장소 설정에서 **Settings → Pages** 에서 Source를 **Deploy from a branch** 로 두고, 배포 브랜치는 사용하지 않아도 됩니다(아래 deploy 스크립트가 `gh-pages` 브랜치에 푸시합니다).
+1. 저장소 설정에서 **Settings → Pages** 에서 Source를 **Deploy from a branch** 로 두고, Branch는 **gh-pages** / **(root)** 로 설정합니다(스크립트가 `gh-pages` 브랜치에 푸시합니다).
 
 2. **Repository name**이 `portfolio`인 경우  
    `vite.config.ts`의 `base: '/portfolio/'` 를 유지합니다.

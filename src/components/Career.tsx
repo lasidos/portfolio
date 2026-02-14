@@ -1,45 +1,188 @@
-import { careers, certificates, hope } from '../data';
+import { useCallback, useEffect, useState } from 'react';
+import { useLanguage } from '../i18n';
+import { CareerChart, getCareerItemYears, getTotalCareerYears } from './CareerChart';
 import './Career.css';
 
+type CardDetailKey = 'careers' | 'projects' | 'domains' | null;
+
 export function Career() {
+  const { t } = useLanguage();
+  const {
+    sectionTitle,
+    dashboard,
+    items,
+  } = t.career;
+  const projectItems = t.projects.items;
+  const totalCareerYears = getTotalCareerYears(items);
+  const careerYearsLabel = `${Math.floor(totalCareerYears)}+`;
+  const projectCount = projectItems.length;
+  const domainCount = dashboard.domainList.length;
+
+  const [selectedChartIndex, setSelectedChartIndex] = useState<number | null>(null);
+  const [detailCard, setDetailCard] = useState<CardDetailKey>(null);
+  const popupItem = selectedChartIndex !== null ? items[selectedChartIndex] ?? null : null;
+
+  const handleBarClick = useCallback((chartIndex: number) => {
+    setSelectedChartIndex((prev) => (prev === chartIndex ? null : chartIndex));
+  }, []);
+
+  const closeChartPopup = useCallback(() => {
+    setSelectedChartIndex(null);
+  }, []);
+
+  const openCardDetail = useCallback((key: CardDetailKey) => {
+    setDetailCard((prev) => (prev === key ? null : key));
+  }, []);
+
+  const closeCardDetail = useCallback(() => {
+    setDetailCard(null);
+  }, []);
+
+  useEffect(() => {
+    if (popupItem === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeChartPopup();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [popupItem, closeChartPopup]);
+
+  useEffect(() => {
+    if (detailCard === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeCardDetail();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [detailCard, closeCardDetail]);
+
   return (
     <section className="career-section" id="career">
       <div className="container">
-        <h2 className="section-title black">CAREER</h2>
-        <div className="career-timeline">
-          {careers.map((c, i) => (
-            <div key={i} className="career-item">
-              <div className="career-meta">
-                <span className="career-company">{c.company}</span>
-                <span className="career-period">{c.period}</span>
-                <span className="career-duration">{c.duration}</span>
-              </div>
-              <p className="career-role">{c.role}</p>
-              <p className="career-desc">{c.description}</p>
-              <p className="career-stack">{c.stack}</p>
+        <h2 className="section-title">{sectionTitle}</h2>
+
+        <div className="career-dashboard">
+          <div className="career-kpi-row">
+            <button
+              type="button"
+              className="career-kpi-card career-kpi-card--clickable"
+              onClick={() => openCardDetail('careers')}
+            >
+              <span className="career-kpi-value">{careerYearsLabel}</span>
+              <span className="career-kpi-label">{dashboard.careers}</span>
+            </button>
+            <button
+              type="button"
+              className="career-kpi-card career-kpi-card--clickable"
+              onClick={() => openCardDetail('projects')}
+            >
+              <span className="career-kpi-value">{projectCount}+</span>
+              <span className="career-kpi-label">{dashboard.projects}</span>
+            </button>
+            <button
+              type="button"
+              className="career-kpi-card career-kpi-card--clickable"
+              onClick={() => openCardDetail('domains')}
+            >
+              <span className="career-kpi-value">{domainCount}+</span>
+              <span className="career-kpi-label">{dashboard.domains}</span>
+            </button>
+          </div>
+
+          <div className="career-chart-wrap">
+            <div className="career-dashboard-chart">
+              <h3 className="career-dashboard-chart-title">{dashboard.chartTitle}</h3>
+              <CareerChart items={items} onBarClick={handleBarClick} selectedChartIndex={selectedChartIndex} />
+              <p className="career-chart-hint">{dashboard.chartHint}</p>
             </div>
-          ))}
-        </div>
-        <div className="certificates-block">
-          <h3>자격증</h3>
-          <ul>
-            {certificates.map((cert, i) => (
-              <li key={i}>
-                <strong>{cert.name}</strong> · {cert.issuer} ({cert.date})
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="hope-block">
-          <h3>희망 근무 조건</h3>
-          <ul>
-            <li><span>고용형태</span> {hope.employment}</li>
-            <li><span>희망근무지</span> {hope.location}</li>
-            <li><span>희망연봉</span> {hope.salary}</li>
-            <li><span>지원분야</span> {hope.position}</li>
-          </ul>
+          </div>
         </div>
       </div>
+
+      {popupItem !== null && (
+        <div
+          className="career-popup-backdrop"
+          onClick={closeChartPopup}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="career-popup-title"
+        >
+          <div className="career-popup" onClick={(e) => e.stopPropagation()}>
+            <button type="button" className="career-popup-close" onClick={closeChartPopup} aria-label="닫기">
+              ×
+            </button>
+            <h3 id="career-popup-title" className="career-popup-company">{popupItem.company}</h3>
+            <div className="career-popup-badges">
+              <span className="career-popup-period">{popupItem.period}</span>
+              <span className="career-popup-duration">{popupItem.duration}</span>
+            </div>
+            <p className="career-popup-role">{popupItem.role}</p>
+            <p className="career-popup-desc">{popupItem.description}</p>
+            <p className="career-popup-stack">{popupItem.stack}</p>
+          </div>
+        </div>
+      )}
+
+      {detailCard !== null && (
+        <div
+          className="career-detail-backdrop"
+          onClick={closeCardDetail}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="career-detail-title"
+        >
+          <div className="career-detail-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="career-detail-header">
+              <h3 id="career-detail-title" className="career-detail-title">
+                {detailCard === 'careers' && dashboard.careers}
+                {detailCard === 'projects' && dashboard.projects}
+                {detailCard === 'domains' && dashboard.domains}
+              </h3>
+              <span className="career-detail-count">
+                {detailCard === 'careers' && `${items.length}건`}
+                {detailCard === 'projects' && `${projectItems.length}건`}
+                {detailCard === 'domains' && `${dashboard.domainList.length}건`}
+              </span>
+              <button type="button" className="career-detail-close" onClick={closeCardDetail} aria-label="닫기">
+                ×
+              </button>
+            </div>
+            <div className="career-detail-body">
+              {detailCard === 'careers' && (
+                <ul className="career-detail-list">
+                  {items.map((c, i) => {
+                    const years = getCareerItemYears(c);
+                    const yearsText = `${years.toFixed(1)}${dashboard.yearUnit}`;
+                    return (
+                      <li key={i} className="career-detail-item">
+                        <span className="career-detail-item-label">{c.company}</span>
+                        <span className="career-detail-item-value">{yearsText}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+              {detailCard === 'projects' && (
+                <ul className="career-detail-list career-detail-list--projects">
+                  {projectItems.map((p, i) => (
+                    <li key={i} className="career-detail-item career-detail-item--project">
+                      <span className="career-detail-item-label">{p.title}</span>
+                      {p.type && <span className="career-detail-item-type">{p.type}</span>}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {detailCard === 'domains' && (
+                <div className="career-detail-tags">
+                  {dashboard.domainList.map((d, i) => (
+                    <span key={i} className="career-detail-tag">{d}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

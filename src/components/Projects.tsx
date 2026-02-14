@@ -1,13 +1,15 @@
-import { projects } from '../data';
+import { useLanguage } from '../i18n';
 import './Projects.css';
 
 export function Projects() {
+  const { t } = useLanguage();
+  const { sectionTitle, whatIdid, stack, github, items } = t.projects;
   return (
     <section className="projects-section" id="projects">
       <div className="container">
-        <h2 className="section-title black">PROJECT</h2>
+        <h2 className="section-title">{sectionTitle}</h2>
         <div className="projects-list">
-          {projects.map((project, i) => (
+          {items.map((project, i) => (
             <article key={i} className="project-item">
               <div className="project-left">
                 <div className="project-header">
@@ -23,13 +25,13 @@ export function Projects() {
                     rel="noopener noreferrer"
                     className="project-link"
                   >
-                    Github →
+                    {github} →
                   </a>
                 )}
               </div>
               <div className="project-right">
                 <div className="project-block">
-                  <p className="block-label">What I did</p>
+                  <p className="block-label">{whatIdid}</p>
                   <ul>
                     {project.achievements.map((a, j) => (
                       <li key={j}>{a}</li>
@@ -37,7 +39,7 @@ export function Projects() {
                   </ul>
                 </div>
                 <div className="project-block">
-                  <p className="block-label">Stack</p>
+                  <p className="block-label">{stack}</p>
                   <p className="stack-text">{project.stack}</p>
                 </div>
               </div>

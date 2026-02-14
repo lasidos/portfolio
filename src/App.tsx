@@ -1,3 +1,4 @@
+import { LanguageProvider } from './i18n';
 import { Nav } from './components/Nav';
 import { Hero } from './components/Hero';
 import { Profile } from './components/Profile';
@@ -9,7 +10,7 @@ import { Footer } from './components/Footer';
 
 function App() {
   return (
-    <>
+    <LanguageProvider>
       <Nav />
       <Hero />
       <main>
@@ -20,7 +21,7 @@ function App() {
         <Career />
       </main>
       <Footer />
-    </>
+    </LanguageProvider>
   );
 }
 

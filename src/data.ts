@@ -1,6 +1,6 @@
 export const profile = {
   name: '유지혁',
-  nameEn: 'YOO JIHYEOK',
+  nameEn: 'Yu Jihyeok',
   role: 'Full Stack Developer',
   email: 'lasidos@naver.com',
   phone: '010-4523-6314',

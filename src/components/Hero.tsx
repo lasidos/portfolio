@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
+import { useLanguage } from '../i18n';
 import './Hero.css';
 
-const TITLE = 'YOO JIHYEOK';
+const TITLE = 'YU JIHYEOK';
 
 export function Hero() {
+  const { t } = useLanguage();
   const [display, setDisplay] = useState('');
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     if (index >= TITLE.length) return;
-    const t = setTimeout(() => {
+    const timeout = setTimeout(() => {
       setDisplay((prev) => prev + TITLE[index]);
       setIndex((i) => i + 1);
     }, 120);
-    return () => clearTimeout(t);
+    return () => clearTimeout(timeout);
   }, [index]);
 
   return (
@@ -23,7 +25,7 @@ export function Hero() {
           <span className="hero-title-text">{display}</span>
           <span className="hero-caret">|</span>
         </h1>
-        <p className="hero-sub">Full Stack Developer</p>
+        <p className="hero-sub">{t.hero.sub}</p>
       </div>
     </section>
   );
