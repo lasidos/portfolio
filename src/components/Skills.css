@@ -1,0 +1,37 @@
+.skills-section {
+  padding: 4rem 0;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.skill-group h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.skill-group ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.skill-group li {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  background: #eee;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+}
+
+.skill-group li:hover {
+  background: #e0e0e0;
+}

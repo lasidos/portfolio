@@ -1,0 +1,21 @@
+.introduce-section {
+  padding: 4rem 0;
+  background: #f5f5f5;
+}
+
+.introduce-content {
+  max-width: 720px;
+}
+
+.introduce-content p {
+  margin-bottom: 1rem;
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.introduce-summary {
+  margin-top: 1.5rem !important;
+  font-weight: 600;
+  color: var(--color-accent);
+}
