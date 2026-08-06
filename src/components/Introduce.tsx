@@ -7,6 +7,7 @@ export function Introduce() {
   return (
     <section className="introduce-section" id="introduce">
       <div className="container">
+        <p className="section-eyebrow">About</p>
         <h2 className="section-title">{title}</h2>
         <div className="introduce-content">
           {paragraphs.map((p, i) => (

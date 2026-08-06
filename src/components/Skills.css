@@ -222,7 +222,7 @@
 
 .skill-group:hover {
   box-shadow: var(--color-shadow-card-hover);
-  border-color: rgba(99, 102, 241, 0.15);
+  border-color: rgba(49, 130, 246, 0.15);
   transform: translateY(-3px);
 }
 
@@ -258,6 +258,6 @@
 
 .skill-group li:hover {
   background: var(--color-accent-light);
-  border-color: rgba(99, 102, 241, 0.2);
+  border-color: rgba(49, 130, 246, 0.2);
   transform: translateY(-1px);
 }

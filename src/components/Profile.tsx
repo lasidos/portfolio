@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { useLanguage } from '../i18n';
-import { OfferModal } from './OfferModal';
 import './Profile.css';
 
 export function Profile() {
   const { t } = useLanguage();
   const p = t.profile;
   const [contactOpen, setContactOpen] = useState(false);
-  const [offerOpen, setOfferOpen] = useState(false);
 
   return (
     <section className="profile-section" id="profile">
@@ -26,13 +24,6 @@ export function Profile() {
             </div>
             <div className="profile-role-row">
               <p className="profile-role">{p.role}</p>
-              <button
-                type="button"
-                className="profile-toggle profile-toggle--offer"
-                onClick={() => setOfferOpen(true)}
-              >
-                {p.offerButton}
-              </button>
               <button
                 type="button"
                 className="profile-toggle"
@@ -70,7 +61,6 @@ export function Profile() {
           </div>
         </div>
       </div>
-      <OfferModal open={offerOpen} onClose={() => setOfferOpen(false)} email={p.email} t={p} />
     </section>
   );
 }

@@ -3,7 +3,74 @@
   background: var(--color-bg-alt);
 }
 
+.projects-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.projects-tabs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.projects-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  flex: 0 0 auto;
+  min-width: 160px;
+  padding: 0.7rem 1.4rem;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: color var(--transition), background var(--transition),
+    border-color var(--transition), transform var(--transition);
+}
+
+.projects-tab:hover {
+  color: var(--color-text);
+  transform: translateY(-2px);
+}
+
+.projects-tab[data-active='true'] {
+  color: #fff;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark, var(--color-accent)) 100%);
+  border-color: transparent;
+  box-shadow: var(--color-shadow-card);
+}
+
+.projects-tab-count {
+  flex-shrink: 0;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.projects-tab[data-active='true'] .projects-tab-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
 .projects-list {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -21,10 +88,40 @@
   transition: transform var(--transition-smooth), box-shadow var(--transition), border-color var(--transition);
 }
 
+/* Desktop: hide toggle, layout via grid */
+.project-item-header {
+  display: contents;
+}
+
+.project-item-header .project-left {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.project-item-header .project-toggle {
+  display: none;
+}
+
+.project-item-body {
+  display: contents;
+}
+
+.project-item-body .project-left {
+  grid-column: 1;
+  grid-row: 2;
+  border-right: 1px solid var(--color-border);
+  padding-right: 2rem;
+}
+
+.project-item-body .project-right {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+
 .project-item:hover {
   transform: translateY(-4px);
   box-shadow: var(--color-shadow-card-hover);
-  border-color: rgba(99, 102, 241, 0.12);
+  border-color: rgba(49, 130, 246, 0.12);
 }
 
 .project-left {
@@ -38,25 +135,40 @@
   border-color: var(--color-accent);
 }
 
-.project-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.project-item h3 {
+.project-title {
   font-family: var(--font-heading);
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--color-text);
   letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.project-meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.project-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.project-meta-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .project-period {
   font-size: 0.8rem;
-  color: var(--color-text-muted);
+  color: var(--color-text);
   font-weight: 500;
 }
 
@@ -64,7 +176,6 @@
   font-size: 0.85rem;
   color: var(--color-accent);
   font-weight: 600;
-  margin-bottom: 0.6rem;
   letter-spacing: -0.01em;
 }
 
@@ -140,10 +251,22 @@
   .projects-section {
     padding: 3.5rem 0;
   }
+  .projects-tab {
+    flex: 1;
+    min-width: 0;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+  }
   .project-item {
     grid-template-columns: 1fr;
     padding: 1.75rem;
     gap: 1.5rem;
+  }
+  .project-item-body .project-left {
+    grid-row: 2;
+  }
+  .project-item-body .project-right {
+    grid-row: 3;
   }
   .project-left {
     border-right: none;
@@ -161,8 +284,79 @@
     gap: 1.25rem;
   }
   .project-item {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
     padding: 1.25rem 1rem;
-    gap: 1.25rem;
+    gap: 0;
+  }
+  .project-item-header {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .project-item-header .project-left {
+    grid-column: auto;
+    grid-row: auto;
+    flex: 1;
+    min-width: 0;
+    border-right: none;
+    padding-right: 0;
+    padding-bottom: 0;
+  }
+  .project-item-header .project-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    font-size: 0.75rem;
+    color: var(--color-accent);
+    background: var(--color-accent-light);
+    border: 1px solid rgba(49, 130, 246, 0.2);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: color var(--transition), background var(--transition);
+  }
+  .project-item-header .project-toggle:hover {
+    color: var(--color-accent-dark);
+    background: rgba(49, 130, 246, 0.15);
+  }
+  .project-item-header .project-toggle-icon {
+    display: block;
+    line-height: 1;
+    transition: transform var(--transition);
+  }
+  .project-item-header .project-toggle[aria-expanded='true'] .project-toggle-icon {
+    transform: rotate(180deg);
+  }
+  .project-item-body {
+    display: block;
+    grid-column: 1;
+    grid-row: 2;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-smooth);
+  }
+  .project-item[data-expanded='true'] .project-item-body {
+    max-height: 1200px;
+  }
+  .project-item-body .project-left {
+    grid-column: auto;
+    grid-row: auto;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .project-item-body .project-right {
+    grid-column: auto;
+    grid-row: auto;
+    padding-top: 1rem;
   }
   .project-item h3 {
     font-size: 1.05rem;
@@ -172,6 +366,6 @@
     font-size: 0.9rem;
   }
   .project-left {
-    padding-bottom: 1.25rem;
+    padding-bottom: 0;
   }
 }

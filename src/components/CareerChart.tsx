@@ -16,9 +16,15 @@ const NOW_YEAR = new Date().getFullYear();
 const NOW_MONTH = new Date().getMonth();
 const NOW_DECIMAL = NOW_YEAR + (NOW_MONTH + 1) / 12;
 
+/** 전각/웨이브 대시를 ~로 통일 (일본어 등 다국어 period 대응) */
+function normalizePeriodSeparator(s: string): string {
+  return s.replace(/\uFF5E/g, '~').replace(/\u301C/g, '~').trim();
+}
+
 function parsePeriod(period: string): { start: number; end: number } {
+  const normalized = normalizePeriodSeparator(period);
   const re = /(\d{4})\.?(\d{2})?\s*~\s*(재직\s*중|현재|Present|現在|(\d{4})\.?(\d{2})?)/;
-  const m = period.match(re);
+  const m = normalized.match(re);
   if (!m) return { start: BASE_YEAR, end: BASE_YEAR + 0.5 };
   const y1 = parseInt(m[1], 10);
   const m1 = m[2] ? parseInt(m[2], 10) : 1;
@@ -73,7 +79,7 @@ interface CareerChartProps {
 /** duration 비중(0~1)에 따른 색상: 비중 높을수록 진한 색 */
 const DURATION_COLORS = [
   'var(--color-accent-light)',  /* 비중 낮음 */
-  '#a5b4fc',
+  '#93c0fc',
   'var(--color-accent)',
   'var(--color-accent-dark)',   /* 비중 높음 */
 ];
@@ -162,7 +168,7 @@ export function CareerChart({ items, onBarClick, selectedChartIndex = null }: Ca
                 : null
             }
             labelFormatter={(label) => label}
-            cursor={{ fill: 'rgba(99, 102, 241, 0.06)' }}
+            cursor={{ fill: 'rgba(49, 130, 246, 0.06)' }}
           />
           <Bar dataKey="startOffset" stackId="a" fill="transparent" isAnimationActive={true} />
           <Bar

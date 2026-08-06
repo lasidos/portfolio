@@ -8,6 +8,8 @@ export interface ProjectItem {
   achievements: string[];
   stack: string;
   github?: string;
+  /** 목업 카드의 지표 2박스 (value + label) */
+  stats?: { value: string; label: string }[];
 }
 
 export interface CareerItem {
@@ -34,9 +36,18 @@ export interface Translation {
     project: string;
     career: string;
     menu: string;
+    contact: string;
   };
   hero: {
     sub: string;
+    tagline: string;
+    badge: string;
+    /** {accent}로 강조 단어 표시 */
+    headline: string;
+    subtitle: string;
+    ctaPrimary: string;
+    ctaSecondary: string;
+    stats: { value: string; label: string }[];
   };
   profile: {
     sectionTitle: string;
@@ -60,8 +71,12 @@ export interface Translation {
     offerAmount: string;
     offerAmountPlaceholder: string;
     offerAmountError: string;
+    offerCc: string;
+    offerCcPlaceholder: string;
     offerSubmit: string;
     offerClose: string;
+    resumeDownload: string;
+    portfolioDownload: string;
   };
   introduce: {
     sectionTitle: string;
@@ -89,6 +104,12 @@ export interface Translation {
     whatIdid: string;
     stack: string;
     github: string;
+    periodLabel: string;
+    typeLabel: string;
+    expandProject: string;
+    collapseProject: string;
+    tabWork: string;
+    tabPersonal: string;
     items: ProjectItem[];
   };
   career: {
@@ -107,6 +128,20 @@ export interface Translation {
       domainList: string[];
       /** 연수 단위 (항목별 년수 표시용) */
       yearUnit: string;
+      /** 개월 단위 (경력 합계 표시용) */
+      monthUnit: string;
+      /** 경력 상세 모달: 년수 합계 라벨 */
+      totalCareerYearsLabel: string;
+      /** 역량 레이더 차트 제목 */
+      radarTitle: string;
+      /** 역량 레이더 차트 힌트 */
+      radarHint: string;
+      /** 역량 레이더 축 라벨 (7개, 값과 순서 일치) */
+      radarAxes: string[];
+      /** 핵심 성과 섹션 제목 */
+      achievementsTitle: string;
+      /** 핵심 성과 하이라이트 카드 */
+      achievements: { title: string; desc: string }[];
     };
     certificatesTitle: string;
     hopeTitle: string;
@@ -127,5 +162,13 @@ export interface Translation {
   };
   footer: {
     copyright: string;
+    downloadTitle: string;
+    career: string;
+    portfolio: string;
+    skill: string;
+    contactTitle: string;
+    contactSubtitle: string;
+    emailCta: string;
+    resumeCta: string;
   };
 }

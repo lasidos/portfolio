@@ -27,7 +27,7 @@
   box-shadow:
     0 20px 40px var(--color-shadow),
     0 0 0 3px rgba(255, 255, 255, 0.9),
-    0 0 0 4px rgba(99, 102, 241, 0.15);
+    0 0 0 4px rgba(49, 130, 246, 0.15);
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
@@ -35,7 +35,7 @@
   transform: scale(1.03);
   box-shadow:
     0 24px 48px var(--color-shadow-hover),
-    0 0 0 1px rgba(99, 102, 241, 0.15);
+    0 0 0 1px rgba(49, 130, 246, 0.15);
 }
 
 .avatar-initial {
@@ -115,7 +115,7 @@
   font-weight: 600;
   color: var(--color-accent);
   background: var(--color-accent-light);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(49, 130, 246, 0.2);
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: color var(--transition), background var(--transition);
@@ -133,8 +133,8 @@
 
 .profile-toggle:hover {
   color: var(--color-accent-dark);
-  background: rgba(99, 102, 241, 0.15);
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+  background: rgba(49, 130, 246, 0.15);
+  box-shadow: 0 2px 8px rgba(49, 130, 246, 0.15);
 }
 
 .profile-toggle--offer {
@@ -147,7 +147,7 @@
   color: #fff;
   background: var(--color-accent-dark);
   border-color: var(--color-accent-dark);
-  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.35);
+  box-shadow: 0 2px 12px rgba(49, 130, 246, 0.35);
 }
 
 .profile-toggle:focus-visible {
@@ -228,12 +228,40 @@
     font-size: 1.5rem;
   }
   .profile-role-row {
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .profile-role {
+    margin: 0;
   }
   .profile-name {
     align-items: center;
   }
+  .profile-info {
+    width: 100%;
+    max-width: 320px;
+  }
+  .profile-contact {
+    text-align: left;
+  }
+  .profile-list {
+    width: 100%;
+    margin: 0 auto;
+  }
   .profile-list li {
-    justify-content: center;
+    justify-content: space-between;
+    text-align: left;
+  }
+  .profile-list .label {
+    flex: 0 0 auto;
+    min-width: 4.5rem;
+    text-align: left;
+  }
+  .profile-list a,
+  .profile-list span:not(.label) {
+    text-align: right;
+    word-break: break-all;
   }
 }

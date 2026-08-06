@@ -2,12 +2,17 @@ import { useState } from 'react';
 import { useLanguage } from '../i18n';
 import './Nav.css';
 
-const SECTION_IDS = ['hero', 'profile', 'introduce', 'skills', 'projects', 'career'] as const;
+const LINKS = [
+  { id: 'projects', key: 'project' },
+  { id: 'introduce', key: 'introduce' },
+  { id: 'skills', key: 'skills' },
+  { id: 'career', key: 'career' },
+] as const;
 
-const LANG_OPTIONS: { loc: 'ko' | 'en' | 'ja'; flag: string; label: string }[] = [
-  { loc: 'ko', flag: '🇰🇷', label: 'KO' },
-  { loc: 'en', flag: '🇺🇸', label: 'EN' },
-  { loc: 'ja', flag: '🇯🇵', label: 'JA' },
+const LANG_OPTIONS: { loc: 'ko' | 'en' | 'ja'; label: string }[] = [
+  { loc: 'ko', label: 'KO' },
+  { loc: 'en', label: 'EN' },
+  { loc: 'ja', label: 'JA' },
 ];
 
 export function Nav() {
@@ -15,64 +20,65 @@ export function Nav() {
   const [open, setOpen] = useState(false);
 
   const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    el?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     setOpen(false);
   };
 
-  const navLabels = [t.nav.home, t.nav.profile, t.nav.introduce, t.nav.skills, t.nav.project, t.nav.career];
-
   return (
-    <nav className={`nav ${open ? 'nav-open' : ''}`}>
-      <div className="nav-bar">
-        <div className="nav-inner">
-          <ul className="nav-list">
-            {SECTION_IDS.map((id, i) => (
-              <li key={id}>
-                <button type="button" onClick={() => scrollTo(id)}>
-                  {navLabels[i]}
-                </button>
-              </li>
-            ))}
-          </ul>
+    <header className="nav">
+      <div className="nav-inner">
+        <button type="button" className="nav-brand" onClick={() => scrollTo('hero')}>
+          {t.profile.name}
+        </button>
+
+        <nav className="nav-links">
+          {LINKS.map((l) => (
+            <button key={l.id} type="button" className="nav-link" onClick={() => scrollTo(l.id)}>
+              {t.nav[l.key]}
+            </button>
+          ))}
+        </nav>
+
+        <div className="nav-right">
           <div className="nav-lang">
-            {LANG_OPTIONS.map(({ loc, flag, label }) => (
+            {LANG_OPTIONS.map(({ loc, label }) => (
               <button
                 key={loc}
                 type="button"
                 className={`nav-lang-btn ${locale === loc ? 'active' : ''}`}
                 onClick={() => setLocale(loc)}
-                aria-label={loc === 'ko' ? '한국어' : loc === 'en' ? 'English' : '日本語'}
-                title={loc === 'ko' ? '한국어' : loc === 'en' ? 'English' : '日本語'}
               >
-                <span className="nav-lang-flag" aria-hidden>{flag}</span>
-                <span className="nav-lang-label">{label}</span>
+                {label}
               </button>
             ))}
           </div>
+          <button type="button" className="nav-cta" onClick={() => scrollTo('contact')}>
+            {t.nav.contact}
+          </button>
+          <button
+            type="button"
+            className="nav-toggle"
+            aria-label={t.nav.menu}
+            aria-expanded={open}
+            onClick={() => setOpen(!open)}
+          >
+            <span /><span /><span />
+          </button>
         </div>
-        <button
-          type="button"
-          className="nav-toggle"
-          aria-label={t.nav.menu}
-          onClick={() => setOpen(!open)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
       </div>
-      <div className="nav-dropdown">
-        <ul className="nav-list nav-list--dropdown">
-          {SECTION_IDS.map((id, i) => (
-            <li key={id}>
-              <button type="button" onClick={() => scrollTo(id)}>
-                {navLabels[i]}
-              </button>
-            </li>
+
+      {open && (
+        <div className="nav-dropdown">
+          {LINKS.map((l) => (
+            <button key={l.id} type="button" onClick={() => scrollTo(l.id)}>
+              {t.nav[l.key]}
+            </button>
           ))}
-        </ul>
-      </div>
-    </nav>
+          <button type="button" className="nav-dropdown-cta" onClick={() => scrollTo('contact')}>
+            {t.nav.contact}
+          </button>
+        </div>
+      )}
+    </header>
   );
 }

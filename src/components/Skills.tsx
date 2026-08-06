@@ -56,6 +56,7 @@ export function Skills() {
   return (
     <section className="skills-section" id="skills">
       <div className="container">
+        <p className="section-eyebrow">Skills</p>
         <h2 className="section-title">{sectionTitle}</h2>
         <div className="skills-cards-wrap">
           {selectedIndex === null ? (

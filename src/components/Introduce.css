@@ -16,7 +16,7 @@
 
 .introduce-content:hover {
   box-shadow: var(--color-shadow-card-hover);
-  border-color: rgba(99, 102, 241, 0.12);
+  border-color: rgba(49, 130, 246, 0.12);
 }
 
 .introduce-content p {

@@ -1,0 +1,36 @@
+.capability-radar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.capability-radar-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+.capability-radar-chart {
+  width: 100%;
+  max-width: 560px;
+}
+
+.capability-radar-hint {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .capability-radar-title {
+    font-size: 0.95rem;
+  }
+  .capability-radar-hint {
+    font-size: 0.8rem;
+  }
+}

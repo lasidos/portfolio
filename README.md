@@ -5,6 +5,19 @@
 - **기술 스택**: React 18, TypeScript, Vite
 - **참고**: [ssongmi.github.io](https://ssongmi.github.io/) 스타일 반영
 
+## PDF 파일
+
+플로팅 버튼에서 사용하는 파일:
+
+- **이력서 다운로드**: `public/이력서_20260214.pdf` (직접 추가)
+- **포트폴리오 PDF**: `public/portfolio.pdf` — `src/data.ts` 기준으로 자동 생성
+
+포트폴리오 PDF 재생성:
+
+```bash
+npm run generate-pdf
+```
+
 ## 로컬 실행
 
 ```bash

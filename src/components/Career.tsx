@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLanguage } from '../i18n';
-import { CareerChart, getCareerItemYears, getTotalCareerYears } from './CareerChart';
+import { getCareerItemYears, getTotalCareerYears } from './CareerChart';
+import { CapabilityRadar } from './CapabilityRadar';
 import './Career.css';
 
 type CardDetailKey = 'careers' | 'projects' | 'domains' | null;
+
+const ACHIEVEMENT_ICONS = ['⚡', '📱', '🚀', '🤖'];
 
 export function Career() {
   const { t } = useLanguage();
@@ -14,21 +17,16 @@ export function Career() {
   } = t.career;
   const projectItems = t.projects.items;
   const totalCareerYears = getTotalCareerYears(items);
+  const totalYearsFormatted = (() => {
+    const years = Math.floor(totalCareerYears);
+    const months = Math.round((totalCareerYears - years) * 12);
+    return `${years}${dashboard.yearUnit} ${months}${dashboard.monthUnit}`;
+  })();
   const careerYearsLabel = `${Math.floor(totalCareerYears)}+`;
   const projectCount = projectItems.length;
   const domainCount = dashboard.domainList.length;
 
-  const [selectedChartIndex, setSelectedChartIndex] = useState<number | null>(null);
   const [detailCard, setDetailCard] = useState<CardDetailKey>(null);
-  const popupItem = selectedChartIndex !== null ? items[selectedChartIndex] ?? null : null;
-
-  const handleBarClick = useCallback((chartIndex: number) => {
-    setSelectedChartIndex((prev) => (prev === chartIndex ? null : chartIndex));
-  }, []);
-
-  const closeChartPopup = useCallback(() => {
-    setSelectedChartIndex(null);
-  }, []);
 
   const openCardDetail = useCallback((key: CardDetailKey) => {
     setDetailCard((prev) => (prev === key ? null : key));
@@ -37,15 +35,6 @@ export function Career() {
   const closeCardDetail = useCallback(() => {
     setDetailCard(null);
   }, []);
-
-  useEffect(() => {
-    if (popupItem === null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeChartPopup();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [popupItem, closeChartPopup]);
 
   useEffect(() => {
     if (detailCard === null) return;
@@ -59,6 +48,7 @@ export function Career() {
   return (
     <section className="career-section" id="career">
       <div className="container">
+        <p className="section-eyebrow">Career</p>
         <h2 className="section-title">{sectionTitle}</h2>
 
         <div className="career-dashboard">
@@ -91,37 +81,28 @@ export function Career() {
 
           <div className="career-chart-wrap">
             <div className="career-dashboard-chart">
-              <h3 className="career-dashboard-chart-title">{dashboard.chartTitle}</h3>
-              <CareerChart items={items} onBarClick={handleBarClick} selectedChartIndex={selectedChartIndex} />
-              <p className="career-chart-hint">{dashboard.chartHint}</p>
+              <CapabilityRadar />
+            </div>
+          </div>
+
+          <div className="career-achievements">
+            <h3 className="career-achievements-title">{dashboard.achievementsTitle}</h3>
+            <div className="career-achievements-grid">
+              {dashboard.achievements.map((a, i) => (
+                <div key={i} className="career-achievement-card">
+                  <span className="career-achievement-icon" aria-hidden>
+                    {ACHIEVEMENT_ICONS[i % ACHIEVEMENT_ICONS.length]}
+                  </span>
+                  <div className="career-achievement-text">
+                    <h4 className="career-achievement-title">{a.title}</h4>
+                    <p className="career-achievement-desc">{a.desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
-
-      {popupItem !== null && (
-        <div
-          className="career-popup-backdrop"
-          onClick={closeChartPopup}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="career-popup-title"
-        >
-          <div className="career-popup" onClick={(e) => e.stopPropagation()}>
-            <button type="button" className="career-popup-close" onClick={closeChartPopup} aria-label="닫기">
-              ×
-            </button>
-            <h3 id="career-popup-title" className="career-popup-company">{popupItem.company}</h3>
-            <div className="career-popup-badges">
-              <span className="career-popup-period">{popupItem.period}</span>
-              <span className="career-popup-duration">{popupItem.duration}</span>
-            </div>
-            <p className="career-popup-role">{popupItem.role}</p>
-            <p className="career-popup-desc">{popupItem.description}</p>
-            <p className="career-popup-stack">{popupItem.stack}</p>
-          </div>
-        </div>
-      )}
 
       {detailCard !== null && (
         <div
@@ -139,7 +120,7 @@ export function Career() {
                 {detailCard === 'domains' && dashboard.domains}
               </h3>
               <span className="career-detail-count">
-                {detailCard === 'careers' && `${items.length}건`}
+                {detailCard === 'careers' && totalYearsFormatted}
                 {detailCard === 'projects' && `${projectItems.length}건`}
                 {detailCard === 'domains' && `${dashboard.domainList.length}건`}
               </span>
